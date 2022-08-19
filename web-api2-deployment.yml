@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-api2-deployment
+  labels:
+    name: web-api2-deployment
+    type: web-api2-deployment
+    tier: api
+    env: dev
+spec:
+  template:
+    metadata:
+      name: web-api2-pod
+      labels:
+        type: web-api2-pod
+    spec:
+      containers:
+        - name: docker-web2-api
+          image: rudibrits/docker-second-web-api
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: ASPNETCORE_URLS
+              value: http://+
+            - name: USER_SECRETS_PATH
+              value: C:\Users\orbri\AppData\Roaming\microsoft\UserSecrets\:/root/.microsoft/usersecrets:ro
+            - name: ASP_NET_HTTPS_PATH
+              value: C:\Users\orbri\.aspnet\https:/root/.aspnet/https/:ro
+  replicas: 3
+  selector:
+    matchLabels:
+      type: web-api2-pod
